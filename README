@@ -2,3 +2,16 @@ molect
 ======
 
 Molecular Imaging using Kinect
+
+
+jmolwrapper
+===========
+
+Simple usage:
+	In the Jmol console or script, run
+		$ sync -PORT
+	In your code:
+		JmolWrapper jwrap = JmolWrapper("localhost", PORT);
+		float x, y;
+		jwrap.rotate(x, y);
+		jwrap.translate(x, y);
