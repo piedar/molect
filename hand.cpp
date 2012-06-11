@@ -114,8 +114,7 @@ void retCheckNI(XnStatus ret) {
 	}
 }
 
-int main(int argc, char **argv)
-{	
+int main(int argc, char **argv) {	
 	hand1.id = -1;
 	hand2.id = -1;
 	
@@ -172,7 +171,6 @@ int main(int argc, char **argv)
 		cvShowImage("BGR", bgrimg);
 	}
 	
-	//contextNI.Shutdown();
 	contextNI.Release();
 
 	
