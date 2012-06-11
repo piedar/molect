@@ -26,8 +26,10 @@
 
 #include <sstream>
 #include <stdio.h>
-#include "socket/jsocket.h"
 #include "jmolwrapper.h"
+extern "C" {
+	#include "socket/jsocket.h"
+}
 
 
 JmolWrapper::JmolWrapper(std::string jhost, int jport) {
