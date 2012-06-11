@@ -14,9 +14,10 @@
 
 #include "jmolwrapper.h"
 
+
 #define GESTURE_TO_USE "Click"
 //#define GESTURE_TO_USE "Wave"
-#define CV_KEY_ESC 1048603
+const int CV_KEY_ESC = 1048603;
 
 xn::GestureGenerator gestureGen;
 xn::HandsGenerator handsGen;
