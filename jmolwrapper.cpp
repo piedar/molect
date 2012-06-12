@@ -43,14 +43,20 @@ JmolWrapper::~JmolWrapper() {
 	close(sock);
 }
 
-void JmolWrapper::rotate(float x, float y) {
+void JmolWrapper::rotate(float x, float y, bool selected) {
 	std::ostringstream command;
 	command << "{\"type\":move, \"style\":rotate, \"x\":" << x << ", \"y\":" << y << "}";
 	jsend(command.str().c_str(), sock);
 }
 
-void JmolWrapper::translate(float x, float y) {
+void JmolWrapper::translate(float x, float y, bool selected) {
 	std::ostringstream command;
 	command << "{\"type\":move, \"style\":translate, \"x\":" << x << ", \"y\":" << y << "}";
+	jsend(command.str().c_str(), sock);
+}
+
+void JmolWrapper::selectMolecule(float distance, float x, float y, float z) {
+	std::ostringstream command;
+	command << "{\"type\":command, \"command\":\"select within(molecule, within(" << distance << ", {" << x << " " << y << " " << z << "}))\"}";
 	jsend(command.str().c_str(), sock);
 }
