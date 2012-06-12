@@ -38,6 +38,7 @@ public:
 	void rotate(float x, float y, bool selected=false);
 	void translate(float x, float y, bool selected=false);
 	void selectMolecule(float distance, float x, float y, float z);
+	void drawVertex(const char* name, float x, float y, float z);
 	
 private:
 	std::string host;
