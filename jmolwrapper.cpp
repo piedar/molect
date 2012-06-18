@@ -31,6 +31,8 @@ extern "C" {
 	#include "socket/jsocket.h"
 }
 
+static const char* command_prefix = "{\"type\":command, \"command\":";
+
 
 JmolWrapper::JmolWrapper(std::string jhost, int jport) {
 	host = jhost;
@@ -45,19 +47,57 @@ JmolWrapper::~JmolWrapper() {
 
 void JmolWrapper::rotate(float x, float y, bool selected) {
 	std::ostringstream command;
-	command << "{\"type\":move, \"style\":rotate, \"x\":" << x << ", \"y\":" << y << "}";
+	if (selected)
+		command << command_prefix << "\"rotateSelected x " << x << "; rotateSelected y " << y << "\"}";
+	else
+		command << command_prefix << "\"rotate x " << x << "; rotate y " << y << "\"}";
 	jsend(command.str().c_str(), sock);
 }
 
 void JmolWrapper::translate(float x, float y, bool selected) {
 	std::ostringstream command;
-	command << "{\"type\":move, \"style\":translate, \"x\":" << x << ", \"y\":" << y << "}";
+	if (selected)
+		command << command_prefix << "\"translateSelected x " << x << "; translateSelected y " << y << "\"}";
+	else
+		command << command_prefix << "\"translate x " << x << "; translate y " << y << "\"}";
 	jsend(command.str().c_str(), sock);
 }
 
-void JmolWrapper::selectMolecule(float distance, float x, float y, float z) {
+void JmolWrapper::drawPoint3D(const char* name, float x, float y, float z) {
 	std::ostringstream command;
-	command << "{\"type\":command, \"command\":\"select within(molecule, within(" << distance << ", {" << x << " " << y << " " << z << "}))\"}";
+	command << command_prefix << "\"draw " << name << " vertices {" << x << " " << y << " " << z << "}\"}";
+	jsend(command.str().c_str(), sock);
+}
+
+void JmolWrapper::drawPoint2D(float x, float y) {
+	std::ostringstream command;
+	command << command_prefix << "\"draw pt [" << x << " " << y << "]\"}";
+	jsend(command.str().c_str(), sock);
+}
+
+void JmolWrapper::selectAll() {
+	std::ostringstream command;
+	command << command_prefix << "\"select all\"}";
+	jsend(command.str().c_str(), sock);
+}
+
+void JmolWrapper::selectNone() {
+	std::ostringstream command;
+	command << command_prefix << "\"select none\"}";
+	jsend(command.str().c_str(), sock);
+}
+
+// select all atoms within x_distance of x and y_distance of y
+void JmolWrapper::selectWithinDistance(float x, float y, float x_distance, float y_distance) {
+	std::ostringstream command;
+	command << command_prefix << "\"select sx > " << x-x_distance << " && sx < " << x+x_distance << " && sy > " << y-y_distance << " && sy < " << y+y_distance << "\"}";
+	jsend(command.str().c_str(), sock);
+}
+
+// select all molecules with atoms within x_distance of x and y_distance of y
+void JmolWrapper::selectMoleculeWithinDistance(float x, float y, float x_distance, float y_distance) {
+	std::ostringstream command;
+	command << command_prefix << "\"select within(molecule, sx > " << x-x_distance << " && sx < " << x+x_distance << " && sy > " << y-y_distance << " && sy < " << y+y_distance << ")\"}";
 	jsend(command.str().c_str(), sock);
 }
 
