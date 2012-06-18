@@ -37,7 +37,8 @@ public:
 	
 	void rotate(float x, float y, bool selected=false);
 	void translate(float x, float y, bool selected=false);
-	void drawVertex(const char* name, float x, float y, float z);
+	void drawPoint3D(const char* name, float x, float y, float z);
+	void drawPoint2D(float x, float y);
 	void selectAll();
 	void selectNone();
 	void selectWithinDistance(float x, float y, float x_distance, float y_distance);
@@ -47,7 +48,6 @@ private:
 	std::string host;
 	int port;
 	int sock;
-	const char* command_prefix = "{\"type\":command, \"command\":";
 };
 
 

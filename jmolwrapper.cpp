@@ -31,6 +31,9 @@ extern "C" {
 	#include "socket/jsocket.h"
 }
 
+static const char* command_prefix = "{\"type\":command, \"command\":";
+
+
 JmolWrapper::JmolWrapper(std::string jhost, int jport) {
 	host = jhost;
 	port = jport;
@@ -44,25 +47,31 @@ JmolWrapper::~JmolWrapper() {
 
 void JmolWrapper::rotate(float x, float y, bool selected) {
 	std::ostringstream command;
-	/*
 	if (selected)
-		command << command_prefix << "\"rotate selected " << x << " " << y << "\"}";
+		command << command_prefix << "\"rotateSelected x " << x << "; rotateSelected y " << y << "\"}";
 	else
-		command << command_prefix << "\"rotate " << x << " " << y << "\"}";
-	*/
-	command << "{\"type\":move, \"style\":rotate, \"x\":" << x << ", \"y\":" << y << "}";
+		command << command_prefix << "\"rotate x " << x << "; rotate y " << y << "\"}";
 	jsend(command.str().c_str(), sock);
 }
 
 void JmolWrapper::translate(float x, float y, bool selected) {
 	std::ostringstream command;
-	command << "{\"type\":move, \"style\":translate, \"x\":" << x << ", \"y\":" << y << "}";
+	if (selected)
+		command << command_prefix << "\"translateSelected x " << x << "; translateSelected y " << y << "\"}";
+	else
+		command << command_prefix << "\"translate x " << x << "; translate y " << y << "\"}";
 	jsend(command.str().c_str(), sock);
 }
 
-void JmolWrapper::drawVertex(const char* name, float x, float y, float z) {
+void JmolWrapper::drawPoint3D(const char* name, float x, float y, float z) {
 	std::ostringstream command;
 	command << command_prefix << "\"draw " << name << " vertices {" << x << " " << y << " " << z << "}\"}";
+	jsend(command.str().c_str(), sock);
+}
+
+void JmolWrapper::drawPoint2D(float x, float y) {
+	std::ostringstream command;
+	command << command_prefix << "\"draw pt [" << x << " " << y << "]\"}";
 	jsend(command.str().c_str(), sock);
 }
 
