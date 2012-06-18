@@ -12,10 +12,10 @@ hand: jmolwrapper.o hand.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS) -o hand hand.cpp jmolwrapper.o
 
 jmolwrapper.o: jsocket.o jmolwrapper.cpp
-	$(CXX) -Wl,-r -nostdlib -o jmolwrapper.o jmolwrapper.cpp jsocket.o 
+	$(CXX) $(CXXFLAGS) -Wl,-r -nostdlib -o jmolwrapper.o jmolwrapper.cpp jsocket.o 
 
 jsocket.o: socket/jsocket.c
-	$(CC) -c $(CFLAGS) socket/jsocket.c
+	$(CC) $(CFLAGS) -c socket/jsocket.c
 
 clean:
 	rm -f *.o *.so
