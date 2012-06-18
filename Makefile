@@ -4,13 +4,13 @@ CXX=g++
 CXXFLAGS=$(CFLAGS)
 
 
-all: jmolwrapper.o jsocket.o
+all: jmolwrapper.o
 
-jmolwrapper.o: jmolwrapper.cpp
-	$(CXX) -c $(CXXFLAGS) jmolwrapper.cpp
+jmolwrapper.o: jsocket.o jmolwrapper.cpp
+	$(CXX) $(CXXFLAGS) -Wl,-r -nostdlib -o jmolwrapper.o jmolwrapper.cpp jsocket.o 
 
 jsocket.o: socket/jsocket.c
-	$(CC) -c $(CFLAGS) socket/jsocket.c
+	$(CC) $(CFLAGS) -c socket/jsocket.c
 
 clean:
 	rm -f *.o

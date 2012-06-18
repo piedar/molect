@@ -6,12 +6,18 @@ Molecular Imaging using Kinect
 
 jmolwrapper
 ===========
+	
+Compilation:
+	make jmolwrapper.o
 
 Simple usage:
 	In the Jmol console or script, run
 		$ sync -PORT
-	In your code:
-		JmolWrapper jwrap = JmolWrapper("localhost", PORT);
-		float x, y;
-		jwrap.rotate(x, y);
-		jwrap.translate(x, y);
+	Code examples:
+		JmolWrapper jmol = JmolWrapper("localhost", PORT);
+		float x_delta, y_delta, x_coord, y_coord;
+		jmol.rotate(x_delta, y_delta);
+		jmol.translate(x_delta, y_delta);
+		jmol.selectNone();
+		jmol.selectMoleculeWithinDistance(10.4, -4.8, 25, 25);
+		jmol.translate(x_coord, y_coord);
