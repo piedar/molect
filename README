@@ -19,5 +19,5 @@ Simple usage:
 		jmol.rotate(x_delta, y_delta);
 		jmol.translate(x_delta, y_delta);
 		jmol.selectNone();
-		jmol.selectMoleculeWithinDistance(10.4, -4.8, 25, 25);
-		jmol.translate(x_coord, y_coord);
+		jmol.selectMoleculeWithinDistance(x_coord, y_coord, 25, 25);
+		jmol.translate(x_delta, y_delta);
