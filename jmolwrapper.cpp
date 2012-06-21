@@ -100,9 +100,3 @@ void JmolWrapper::selectMoleculeWithinDistance(float x, float y, float x_distanc
 	command << command_prefix << "\"select within(molecule, sx > " << x-x_distance << " && sx < " << x+x_distance << " && sy > " << y-y_distance << " && sy < " << y+y_distance << ")\"}";
 	jsend(command.str().c_str(), sock);
 }
-
-void JmolWrapper::drawVertex(const char* name, float x, float y, float z) {
-	std::ostringstream command;
-	command << "{\"type\":command, \"command\":\"draw " << name << " vertices {" << x << " " << y << " " << z << "}\"}";
-	jsend(command.str().c_str(), sock);
-}
