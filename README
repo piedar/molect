@@ -4,9 +4,24 @@ molect
 Molecular Imaging using Kinect
 
 
+hand
+====
+
+Requirements:
+	boost
+	opencv
+	openni
+
+Compilation:
+	make hand
+
+Usage:
+	./hand -h
+
+
 jmolwrapper
 ===========
-	
+
 Compilation:
 	make jmolwrapper.o
 

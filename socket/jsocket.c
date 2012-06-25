@@ -1,9 +1,9 @@
 /*
  * jsocket.c
  *
- * 
+ *
  * Copyright 2012 Benn Snyder <benn.snyder@gmail.com>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -36,7 +36,7 @@ int jsock(const char* jhost, int jport) {
 	int sock;
 	struct hostent* host;
 	struct sockaddr_in server_addr;
-	
+
 	if ((host = gethostbyname(jhost)) == NULL) {
 		printf("couldn't find host\n");
 		return -1;
@@ -45,17 +45,17 @@ int jsock(const char* jhost, int jport) {
 		printf("socket error\n");
 		return -1;
 	}
-	
+
 	bzero((char *) &server_addr, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr = *((struct in_addr*)host->h_addr);
 	server_addr.sin_port = htons(jport);
-	
+
 	if (connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
 		printf("connect error\n");
 		return -1;
 	}
-	
+
 	return sock;
 }
 
@@ -68,6 +68,6 @@ void jsend(const char* jcommand, int sock) {
 // send a command to a new socket on the specified host and port
 void jsendh(const char* jcommand, const char* jhost, int jport) {
 	int sock = jsock(jhost, jport);
-	jsend(jcommand, sock);	
+	jsend(jcommand, sock);
 	close(sock);
 }
