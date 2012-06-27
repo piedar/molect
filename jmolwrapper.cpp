@@ -42,7 +42,7 @@ JmolWrapper::JmolWrapper(std::string jhost, int jport) {
 }
 
 JmolWrapper::~JmolWrapper() {
-	close(sock);
+	jclose(sock);
 }
 
 void JmolWrapper::rotate(float x, float y, bool selected) {

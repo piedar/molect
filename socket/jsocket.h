@@ -33,6 +33,7 @@
 int jsock(const char* jhost, int jport);
 void jsend(const char* jcommand, int sock);
 void jsendh(const char* jcommand, const char* jhost, int jport);
+void jclose(int sock);
 
 
 #endif

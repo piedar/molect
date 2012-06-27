@@ -26,9 +26,15 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <netdb.h>
-#include <unistd.h>
 #include "jsocket.h"
+
+#ifdef _WIN32
+	#include <winsock.h>
+	#define close(sock) closesocket(sock)
+#else
+	#include <netdb.h>
+	#include <unistd.h>
+#endif
 
 
 // create and return a socket to the specified host or return -1 on error
@@ -45,8 +51,8 @@ int jsock(const char* jhost, int jport) {
 		printf("socket error\n");
 		return -1;
 	}
-
-	bzero((char *) &server_addr, sizeof(server_addr));
+	
+	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr = *((struct in_addr*)host->h_addr);
 	server_addr.sin_port = htons(jport);
@@ -69,5 +75,10 @@ void jsend(const char* jcommand, int sock) {
 void jsendh(const char* jcommand, const char* jhost, int jport) {
 	int sock = jsock(jhost, jport);
 	jsend(jcommand, sock);
+	close(sock);
+}
+
+// dumb little function so we don't have to do OS-specific stuff higher-up
+void jclose(int sock) {
 	close(sock);
 }

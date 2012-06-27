@@ -3,7 +3,7 @@ CFLAGS=-fPIC
 CXX=g++
 CXXFLAGS=$(CFLAGS)
 INCLUDES=-I/usr/include/ni
-LIBS=-lOpenNI -lboost_program_options `pkg-config --libs opencv`
+LIBS=-lOpenNI -lboost_program_options -lopencv_highgui -lopencv_core
 
 
 all: hand
