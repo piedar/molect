@@ -6,7 +6,7 @@
  *
  *
  * Copyright 2012 Benn Snyder <benn.snyder@gmail.com>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
@@ -20,14 +20,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <iostream>
 #include <sstream>
 #include <string>
 
 #include <boost/program_options.hpp>
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc_c.h>
+#ifdef USE_OPENCV
+	#include <opencv2/highgui/highgui.hpp>
+	#include <opencv2/imgproc/imgproc_c.h>
+#endif
 
 #include <ni/XnCppWrapper.h>
 
@@ -164,7 +168,6 @@ void XN_CALLBACK_TYPE hand_update(xn::HandsGenerator& generator, XnUserID nId, c
 					jmol->selectNone();
 			}
 			else {
-				printf("here with action = %s\n", hands[i]->action.c_str());
 				float x_diff = hands[i]->x_coord - pPosition->X;
 				float y_diff = hands[i]->y_coord - pPosition->Y;
 				if (hands[i]->action == "translate")
@@ -231,7 +234,7 @@ int parse_args(int argc, char **argv) {
 		for (int i = 0; i < num_actions; i++)
 			std::cout << actions[i] << ", ";
 		std::cout << std::endl;
-		exit(1);
+		return 1;
 	}
 	if (!vm.count("smoothing"))
 		smoothing_factor = -1;
@@ -239,33 +242,34 @@ int parse_args(int argc, char **argv) {
 	if (vm.count("h1-click")) {
 		if (!string_in_array(h1_click, actions, num_actions)) {
 			printf("invalid parameter for h1-click\n");
-			exit(1);
+			return 1;
 		}
-		else
-			printf("%s\n", h1_click.c_str());
 	}
 	if (vm.count("h1-wave")) {
 		if (!string_in_array(h1_wave, actions, num_actions)) {
 			printf("invalid parameter for h1-wave\n");
-			exit(1);
+			return 1;
 		}
 	}
 	if (vm.count("h2-click")) {
 		if (!string_in_array(h2_click, actions, num_actions)) {
 			printf("invalid parameter for h2-click\n");
-			exit(1);
+			return 1;
 		}
 	}
 	if (vm.count("h2-wave")) {
 		if (!string_in_array(h2_wave, actions, num_actions)) {
 			printf("invalid parameter for h2-wave\n");
-			exit(1);
+			return 1;
 		}
 	}
+	
+	return 0;
 }
 
 int main(int argc, char **argv) {
-	parse_args(argc, argv);
+	if (int pret = parse_args(argc, argv) != 0)
+		return pret;
 	verbose = true;
 
 	jmol = new JmolWrapper(jhost, jport);
@@ -298,6 +302,7 @@ int main(int argc, char **argv) {
 	retNI = gestureGen.AddGesture("Wave", NULL);
 	retCheckNI(retNI);
 
+#ifdef USE_OPENCV
 	xn::ImageGenerator imageGen;
 	xn::ImageMetaData imageGenMD;
 
@@ -314,7 +319,7 @@ int main(int argc, char **argv) {
 	const XnRGB24Pixel *imageMap;
 	IplImage *bgrimg = cvCreateImage(cvSize(xres, yres), IPL_DEPTH_8U, 3);
 	IplImage *rgbimg = cvCreateImage(cvSize(xres, yres), IPL_DEPTH_8U, 3);
-
+	
 	for (int key; key != CV_KEY_ESC; key = cvWaitKey(5)) {
 		retNI = contextNI.WaitAndUpdateAll();
 		retCheckNI(retNI);
@@ -325,6 +330,15 @@ int main(int argc, char **argv) {
 		cvCvtColor(bgrimg, rgbimg, CV_BGR2RGB);
 		cvShowImage("Molect Viewer", rgbimg);
 	}
+#else
+	if (verbose)
+		printf("%s was compiled without opencv support - video output disabled\n", argv[0]);
+		
+	while(true) {
+		retNI = contextNI.WaitAndUpdateAll();
+		retCheckNI(retNI);
+	}
+#endif
 
 
 	contextNI.Release();
