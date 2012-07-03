@@ -9,6 +9,7 @@ hand
 
 Requirements:
 	boost
+	libusb
 	opencv
 	openni
 
@@ -36,3 +37,27 @@ Simple usage:
 		jmol.selectNone();
 		jmol.selectMoleculeWithinDistance(x_coord, y_coord, 25, 25);
 		jmol.translate(x_delta, y_delta);
+
+
+General Instructions - INCOMPLETE
+====================
+
+OS X
+----
+To run the OS X binary, you'll need the following:
+	Mac OS X 10.6 (Snow Leopard) or greater
+	OpenNI Sensor - http://www.openni.org/Downloads/OpenNIModules.aspx (OpenNI Compliant Hardware Binaries, Unstable, PrimeSensor Module Unstable Build for MacOSX)
+
+To compile and run from source on OS X, you'll need the following:
+	Mac OS X 10.6 (Snow Leopard) or greater
+	OpenNI - https://github.com/OpenNI/OpenNI
+	SensorKinect - https://github.com/avin2/SensorKinect
+	MacPorts - http://www.macports.org/index.php
+		libusb
+		boost
+		opencv (optional)
+		
+	1) Compile and install OpenNI and SensorKinect according to their respective READMEs
+	2) Install MacPorts according to the instructions at http://www.macports.org/install.php
+	3) sudo port install libusb boost opencv
+	4)

@@ -26,16 +26,15 @@
 #include <sstream>
 #include <string>
 
+#include <XnCppWrapper.h>
 #include <boost/program_options.hpp>
+#include "jmolwrapper.h"
 
 #ifdef USE_OPENCV
 	#include <opencv2/highgui/highgui.hpp>
 	#include <opencv2/imgproc/imgproc_c.h>
 #endif
 
-#include <ni/XnCppWrapper.h>
-
-#include "jmolwrapper.h"
 
 // configuration globals
 int jport, jres_x, jres_y;
@@ -60,8 +59,7 @@ struct handpos {
 	std::string action;
 };
 
-handpos hand1;
-handpos hand2;
+handpos hand1, hand2;
 
 
 std::pair<float, float> coords_kinect2jmol(float kx, float ky, int kresx, int kresy, int jresx, int jresy) {
@@ -214,7 +212,7 @@ int parse_args(int argc, char **argv) {
 	desc.add_options()
 		("help,h", "Print help message")
 		("verbose,v", po::value<bool>(&verbose)->zero_tokens(), "Be verbose")
-		("xml-config,x", po::value<std::string>(&xml_config)->default_value("configNI/BasicColorAndDepth.xml"), "Configuration file for OpenNI")
+		("xml-config,c", po::value<std::string>(&xml_config)->default_value("configNI/BasicColorAndDepth.xml"), "Configuration file for OpenNI")
 		("jhost,j", po::value<std::string>(&jhost)->default_value("localhost"), "Host where Jmol is running")
 		("jport,p", po::value<int>(&jport)->default_value(3000), "Port where Jmol is listening")
 		("jres-x,x", po::value<int>(&jres_x)->default_value(750), "x resolution of the Jmol view")

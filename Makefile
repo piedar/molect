@@ -12,11 +12,13 @@ ifeq ($(USE_OPENCV), true)
 LIBS+=-lopencv_highgui -lopencv_imgproc
 endif
 
+LIBDIR=$(DESTDIR)/usr/lib
+BINDIR=$(DESTDIR)/usr/bin
 
 all: hand
 
-hand: jmolwrapper.o hand.cpp config.h
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS) -o hand hand.cpp jmolwrapper.o
+hand: libjmolwrapper.so hand.cpp config.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBS) -L. -ljmolwrapper -o hand hand.cpp 
 
 config.h:
 	touch config.h
@@ -24,11 +26,19 @@ ifeq ($(USE_OPENCV), true)
 	echo "#define USE_OPENCV" >> config.h
 endif
 
-jmolwrapper.o: jsocket.o jmolwrapper.cpp
-	$(CXX) $(CXXFLAGS) -Wl,-r -nostdlib -o jmolwrapper.o jmolwrapper.cpp jsocket.o
+libjmolwrapper.so: jsocket.o jmolwrapper.cpp
+	$(CXX) $(CXXFLAGS) -shared -o libjmolwrapper.so jmolwrapper.cpp jsocket.o
 
 jsocket.o: socket/jsocket.c
 	$(CC) $(CFLAGS) -c socket/jsocket.c
+
+install:
+	cp hand $(BINDIR)
+	cp libjmolwrapper.so $(LIBDIR)
+	
+uninstall:
+	rm $(BINDIR)/hand
+	rm $(LIBDIR)/libjmolwrapper.so
 
 clean:
 	rm -f *.o *.so config.h
