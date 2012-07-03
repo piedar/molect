@@ -22,6 +22,10 @@
 
 #include "config.h"
 
+#ifndef CONFDIR
+	#define CONFDIR
+#endif
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -212,7 +216,7 @@ int parse_args(int argc, char **argv) {
 	desc.add_options()
 		("help,h", "Print help message")
 		("verbose,v", po::value<bool>(&verbose)->zero_tokens(), "Be verbose")
-		("xml-config,c", po::value<std::string>(&xml_config)->default_value("configNI/BasicColorAndDepth.xml"), "Configuration file for OpenNI")
+		("xml-config,c", po::value<std::string>(&xml_config)->default_value(std::string(CONFDIR)+std::string("configNI/BasicColorAndDepth.xml")), "Configuration file for OpenNI")
 		("jhost,j", po::value<std::string>(&jhost)->default_value("localhost"), "Host where Jmol is running")
 		("jport,p", po::value<int>(&jport)->default_value(3000), "Port where Jmol is listening")
 		("jres-x,x", po::value<int>(&jres_x)->default_value(750), "x resolution of the Jmol view")

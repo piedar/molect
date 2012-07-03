@@ -14,6 +14,7 @@ endif
 
 LIBDIR=/usr/lib
 BINDIR=/usr/bin
+CONFDIR=/usr/share/molect
 
 all: hand
 
@@ -22,6 +23,7 @@ hand: libjmolwrapper.so hand.cpp config.h
 
 config.h:
 	touch config.h
+	echo "#define CONFDIR \"$(CONFDIR)/\"" >> config.h
 ifeq ($(USE_OPENCV), true)
 	echo "#define USE_OPENCV" >> config.h
 endif
@@ -33,10 +35,10 @@ jsocket.o: socket/jsocket.c
 	$(CC) $(CFLAGS) -c socket/jsocket.c
 
 install:
-	mkdir -p $(DESTDIR)/$(BINDIR)
-	mkdir -p $(DESTDIR)/$(LIBDIR)
+	mkdir -p $(DESTDIR)/$(BINDIR) $(DESTDIR)/$(LIBDIR) $(DESTDIR)/$(CONFDIR)
 	cp hand $(DESTDIR)/$(BINDIR)
 	cp libjmolwrapper.so $(DESTDIR)/$(LIBDIR)
+	cp -r configNI $(DESTDIR)/$(CONFDIR)
 	
 uninstall:
 	rm $(DESTDIR)/$(BINDIR)/hand
