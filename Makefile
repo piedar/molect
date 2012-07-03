@@ -12,8 +12,8 @@ ifeq ($(USE_OPENCV), true)
 LIBS+=-lopencv_highgui -lopencv_imgproc
 endif
 
-LIBDIR=$(DESTDIR)/usr/lib
-BINDIR=$(DESTDIR)/usr/bin
+LIBDIR=/usr/lib
+BINDIR=/usr/bin
 
 all: hand
 
@@ -33,12 +33,14 @@ jsocket.o: socket/jsocket.c
 	$(CC) $(CFLAGS) -c socket/jsocket.c
 
 install:
-	cp hand $(BINDIR)
-	cp libjmolwrapper.so $(LIBDIR)
+	mkdir -p $(DESTDIR)/$(BINDIR)
+	mkdir -p $(DESTDIR)/$(LIBDIR)
+	cp hand $(DESTDIR)/$(BINDIR)
+	cp libjmolwrapper.so $(DESTDIR)/$(LIBDIR)
 	
 uninstall:
-	rm $(BINDIR)/hand
-	rm $(LIBDIR)/libjmolwrapper.so
+	rm $(DESTDIR)/$(BINDIR)/hand
+	rm $(DESTDIR)/$(LIBDIR)/libjmolwrapper.so
 
 clean:
 	rm -f *.o *.so config.h
