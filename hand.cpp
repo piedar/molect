@@ -222,10 +222,10 @@ int parse_args(int argc, char **argv) {
 		("jres-x,x", po::value<int>(&jres_x)->default_value(750), "x resolution of the Jmol view")
 		("jres-y,y", po::value<int>(&jres_y)->default_value(550), "y resolution of the Jmol view")
 		("smoothing,s", po::value<float>(&smoothing_factor), "Smoothing value for hand tracking - 0 <= s <= 1")
-		("h1-click", po::value<std::string>(&h1_click)->default_value("select_molecule"), "Click action for first hand")
-		("h1-wave", po::value<std::string>(&h1_wave)->default_value("translate"), "Wave action for first hand")
-		("h2-click", po::value<std::string>(&h2_click)->default_value("rotate"), "Click action for second hand")
-		("h2-wave", po::value<std::string>(&h2_wave)->default_value("rotate_all"), "Wave action for second hand")
+		("h1-click", po::value<std::string>(&h1_click)->default_value("rotate_all"), "Click action for first hand")
+		("h1-wave", po::value<std::string>(&h1_wave)->default_value("translate_all"), "Wave action for first hand")
+		("h2-click", po::value<std::string>(&h2_click)->default_value("select_molecule"), "Click action for second hand")
+		("h2-wave", po::value<std::string>(&h2_wave)->default_value("translate"), "Wave action for second hand")
 	;
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);

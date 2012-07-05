@@ -14,7 +14,7 @@ endif
 
 LIBDIR=/usr/lib
 BINDIR=/usr/bin
-CONFDIR=/usr/share/molect
+CONFDIR=/etc/molect
 
 all: hand
 
