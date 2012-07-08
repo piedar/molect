@@ -43,6 +43,7 @@ install:
 uninstall:
 	rm $(DESTDIR)/$(BINDIR)/hand
 	rm $(DESTDIR)/$(LIBDIR)/libjmolwrapper.so
+	rm -r $(DESTDIR)/$(CONFDIR)
 
 clean:
 	rm -f *.o *.so config.h

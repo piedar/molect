@@ -10,7 +10,7 @@ hand
 Requirements:
 	boost
 	libusb
-	opencv
+	opencv (optional)
 	openni
 
 Compilation:
