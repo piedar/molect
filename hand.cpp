@@ -40,6 +40,19 @@
 #endif
 
 
+class ContextGuard {
+public:
+	ContextGuard(xn::Context  &c) {
+		context = c;
+	}
+	~ContextGuard() {
+		context.Release();
+	}
+private:
+	xn::Context context;
+};
+
+
 // configuration globals
 int jport, jres_x, jres_y;
 std::string jhost, xml_config, h1_click, h1_wave, h2_click, h2_wave;
@@ -280,14 +293,19 @@ int main(int argc, char **argv) {
 
 	XnStatus retNI;
 	xn::Context contextNI;
+	
+	ContextGuard cguard = ContextGuard(contextNI);
 
 	retNI = contextNI.InitFromXmlFile(xml_config.c_str(), NULL);
 	retCheckNI(retNI);
+	
+	printf("yello\n");
+	
 	retNI = gestureGen.Create(contextNI);
 	retCheckNI(retNI);
 	retNI = handsGen.Create(contextNI);
 	retCheckNI(retNI);
-
+	
 	if (smoothing_factor >= 0 && smoothing_factor <= 1)
 		handsGen.SetSmoothing(smoothing_factor);
 	else if (verbose)
@@ -322,9 +340,11 @@ int main(int argc, char **argv) {
 	IplImage *bgrimg = cvCreateImage(cvSize(xres, yres), IPL_DEPTH_8U, 3);
 	IplImage *rgbimg = cvCreateImage(cvSize(xres, yres), IPL_DEPTH_8U, 3);
 	
-	for (int key; key != CV_KEY_ESC; key = cvWaitKey(5)) {
+	for (int key; key != CV_KEY_ESC; key = cvWaitKey(.5)) {
 		retNI = contextNI.WaitAndUpdateAll();
+		//retNI = contextNI.WaitAndUpdate(imageGen);
 		retCheckNI(retNI);
+		printf("yaaaaa\n");
 
 		imageMap = imageGen.GetRGB24ImageMap();
 		XnRGB24Pixel* imageRaw = const_cast<XnRGB24Pixel*> (imageMap);
@@ -336,7 +356,7 @@ int main(int argc, char **argv) {
 	if (verbose)
 		printf("%s was compiled without opencv support - video output disabled\n", argv[0]);
 		
-	while(true) {
+	while (true) {
 		retNI = contextNI.WaitAndUpdateAll();
 		retCheckNI(retNI);
 	}
