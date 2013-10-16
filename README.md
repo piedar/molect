@@ -1,23 +1,25 @@
 # molect
 
 
-Molecular Imaging using Kinect
-Movement-specific C++ wrapper around Jmol socket interface.
+Molecular Imaging using Kinect.<br/>
+Movement-specific C++ wrapper around Jmol socket interface.<br/>
+Copyright 2013 Benn Snyder <benn.snyder@gmail.com>, Norman Chamusa <nchamusa@usapglobal.org>.<br/>
+Dual licensed under your choice of GPLv3, MIT, or both.
 
 
 ## hand
 
 Requirements:
-	boost
-	libusb
-	opencv (optional)
-	openni
 
-Compilation:
-	make hand
+- boost
+- libusb
+- opencv (optional)
+- openni
 
-Usage:
-	./hand -h
+Compile and run:
+
+    make hand
+    ./hand -h
 
 
 ## jmolwrapper
@@ -37,7 +39,3 @@ Example:
     jmol.selectNone();
     jmol.selectMoleculeWithinDistance(x_coord, y_coord, 25, 25);
     jmol.translate(x_delta, y_delta);
-
-Copyright 2013 Benn Snyder <benn.snyder@gmail.com>, Norman Chamusa <nchamusa@usapglobal.org>
-Dual licensed under your choice of GPLv3, MIT, or both.
-
